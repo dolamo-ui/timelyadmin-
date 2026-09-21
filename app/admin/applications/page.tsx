@@ -82,8 +82,77 @@ export default function ApplicationsPage() {
         <div className="mt-5 rounded-lg bg-warn/10 px-3.5 py-2.5 text-sm text-warn">{error}</div>
       )}
 
-      <div className="mt-6 overflow-x-auto rounded-xl border border-line">
-        <table className="w-full min-w-[860px] text-left text-sm">
+      {/* ---------- phones: one card per registration ---------- */}
+      <div className="mt-6 md:hidden">
+        {rows === null && !error && <p className="py-6 text-center text-sm text-muted">Loading…</p>}
+        {rows !== null && visible.length === 0 && (
+          <p className="py-6 text-center text-sm text-muted">
+            {filter === 'All' ? 'No registrations yet.' : `No ${filter.toLowerCase()} registrations.`}
+          </p>
+        )}
+        <ul className="space-y-3">
+          {visible.map((r) => (
+            <li key={r.id} className="rounded-xl border border-line bg-surface p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-medium text-ink">{r.businessName}</p>
+                  <p className="text-xs text-muted">
+                    {r.category} · {r.city}
+                  </p>
+                </div>
+                <span className="shrink-0 text-xs text-muted">{formatStamp(r.createdAt)}</span>
+              </div>
+
+              {r.message && <p className="mt-2 text-xs italic text-muted/80">“{r.message}”</p>}
+
+              <p className="mt-3 text-sm font-medium text-ink">{r.contactName}</p>
+              <div className="mt-2 grid grid-cols-2 gap-2 text-sm font-medium">
+                <a href={`tel:+${toInternational(r.phone)}`} className="rounded-lg bg-brand-light py-2.5 text-center text-brand-dark">
+                  Call
+                </a>
+                <a
+                  href={`https://wa.me/${toInternational(r.whatsapp)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-lg bg-success/10 py-2.5 text-center text-success"
+                >
+                  WhatsApp
+                </a>
+              </div>
+              <a href={`mailto:${r.email}`} className="mt-2 block break-all text-xs text-brand">
+                {r.email}
+              </a>
+
+              <div className="mt-3 flex items-center justify-between gap-3 border-t border-line pt-3">
+                <select
+                  value={r.status}
+                  disabled={busyId === r.id}
+                  onChange={(e) => change(r.id, e.target.value as ApplicationStatus)}
+                  aria-label={`Status for ${r.businessName}`}
+                  className={`rounded-md border-0 px-2.5 py-2 text-xs font-medium outline-none ${STATUS_STYLE[r.status]}`}
+                >
+                  {STATUSES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+                {(r.status === 'New' || r.status === 'Contacted') && (
+                  <Link
+                    href={`/admin/businesses/new?application=${encodeURIComponent(r.id)}`}
+                    className="text-sm font-medium text-brand"
+                  >
+                    Set up login
+                  </Link>
+                )}
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-6 hidden overflow-x-auto rounded-xl border border-line md:block">
+        <table className="w-full min-w-[760px] text-left text-sm">
           <thead>
             <tr className="border-b border-line bg-paper text-xs uppercase tracking-wide text-muted">
               <th className="px-5 py-3 font-medium">Received</th>

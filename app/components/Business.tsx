@@ -49,9 +49,9 @@ export function BusinessShell({ items, children }: { items: NavItem[]; children:
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex flex-col lg:flex-row">
       <Sidebar sectionLabel="Business Owner" contextLabel={business?.name ?? '—'} items={items} />
-      <div className="flex-1 px-10 py-8">
+      <div className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
         <div className="mx-auto max-w-4xl">
           {state === 'loading' && <p className="text-sm text-muted">Loading your business…</p>}
           {state === 'missing' && (

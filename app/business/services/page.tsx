@@ -78,7 +78,7 @@ export default function ServicesPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-display text-2xl font-semibold text-ink">Services</h1>
           <p className="mt-1.5 text-sm text-muted">What customers can book, and what it costs.</p>
@@ -103,8 +103,8 @@ export default function ServicesPage() {
           <h2 className="font-display text-sm font-semibold text-ink">
             {draft.id ? 'Edit service' : 'New service'}
           </h2>
-          <div className="mt-4 grid grid-cols-3 gap-4">
-            <div className="col-span-3 sm:col-span-1">
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div>
               <label htmlFor="s-name" className="mb-1.5 block text-sm font-medium text-ink">Name</label>
               <input
                 id="s-name"
@@ -167,30 +167,33 @@ export default function ServicesPage() {
         </form>
       )}
 
-      <div className="mt-8 overflow-hidden rounded-xl border border-line">
+      <div className="mt-8 overflow-x-auto rounded-xl border border-line">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-line bg-paper text-xs uppercase tracking-wide text-muted">
-              <th className="px-5 py-3 font-medium">Service</th>
-              <th className="px-5 py-3 font-medium">Duration</th>
-              <th className="px-5 py-3 font-medium text-right">Price</th>
-              <th className="px-5 py-3 font-medium"></th>
+              <th className="px-3 py-3 sm:px-5 font-medium">Service</th>
+              <th className="hidden px-3 py-3 font-medium sm:table-cell sm:px-5">Duration</th>
+              <th className="px-3 py-3 sm:px-5 font-medium text-right">Price</th>
+              <th className="px-3 py-3 sm:px-5 font-medium"></th>
             </tr>
           </thead>
           <tbody>
             {services === null && !error && (
-              <tr><td colSpan={4} className="px-5 py-6 text-center text-muted">Loading…</td></tr>
+              <tr><td colSpan={4} className="px-3 py-6 sm:px-5 text-center text-muted">Loading…</td></tr>
             )}
             {services?.length === 0 && (
-              <tr><td colSpan={4} className="px-5 py-6 text-center text-muted">No services yet — add your first one.</td></tr>
+              <tr><td colSpan={4} className="px-3 py-6 sm:px-5 text-center text-muted">No services yet — add your first one.</td></tr>
             )}
             {services?.map((s) => (
               <tr key={s.id} className="border-b border-line last:border-0 hover:bg-paper/60">
-                <td className="px-5 py-3.5 font-medium text-ink">{s.name}</td>
-                <td className="px-5 py-3.5 text-muted">{s.duration_minutes} min</td>
-                <td className="px-5 py-3.5 text-right tabular-nums text-ink">{formatPrice(s.price)}</td>
-                <td className="px-5 py-3.5 text-right">
-                  <div className="flex justify-end gap-3">
+                <td className="px-3 py-3.5 font-medium text-ink sm:px-5">
+                  {s.name}
+                  <span className="mt-0.5 block text-xs font-normal text-muted sm:hidden">{s.duration_minutes} min</span>
+                </td>
+                <td className="hidden px-3 py-3.5 text-muted sm:table-cell sm:px-5">{s.duration_minutes} min</td>
+                <td className="px-3 py-3.5 sm:px-5 text-right tabular-nums text-ink">{formatPrice(s.price)}</td>
+                <td className="px-3 py-3.5 sm:px-5 text-right">
+                  <div className="flex flex-col items-end gap-2 sm:flex-row sm:justify-end sm:gap-3">
                     <button
                       onClick={() => {
                         setError(null);

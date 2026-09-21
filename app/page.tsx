@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Bricolage_Grotesque } from 'next/font/google';
 import { AuthCta } from './components/AuthCta';
+import { Logo } from './components/Logo';
 import { RegisterForm } from './components/RegisterForm';
 import { CATEGORIES } from '../lib/registration';
 import s from './landing.module.css';
@@ -9,7 +10,7 @@ import s from './landing.module.css';
 const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
 
 export const metadata: Metadata = {
-  title: 'Timely for business — more bookings, less back-and-forth',
+  title: 'Timely for business — more bookings, less chasing',
   description:
     'Get found, get booked and stay organised. Timely gives customers one simple way to book your business, and gives you one clear place to manage it. Register your business today.',
 };
@@ -186,14 +187,15 @@ export default function LandingPage() {
         <div className={s.wrap}>
           <nav className={s.nav} aria-label="Main">
             <a href="#top" className={s.brand}>
-              <span className={`${s.mark} ${s.display}`}>T</span>
+              <Logo size={44} className={s.markImg} priority />
               <span className={s.wordmark}>TIMELY</span>
               <span className={s.forBusiness}>for business</span>
             </a>
             <div className={s.navActions}>
-              <AuthCta className={s.pill} guestLabel="Log in" />
+              <AuthCta className={s.pill} guestLabel="Log in" memberLabel="Dashboard" />
               <a href="#register" className={`${s.pill} ${s.pillSolid}`}>
-                Register your business
+                <span className={s.long}>Register your business</span>
+                <span className={s.short}>Register</span>
               </a>
             </div>
           </nav>
@@ -202,7 +204,7 @@ export default function LandingPage() {
             <div>
               <h1 className={`${s.h1} ${s.display}`}>
                 <span>More bookings.</span>
-                <span>No back-and-forth.</span>
+                <span>Less chasing.</span>
               </h1>
               <p className={s.lede}>
                 Timely puts your business in front of customers who are ready to book. They pick a service and

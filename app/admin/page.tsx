@@ -31,16 +31,16 @@ export default function AdminOverviewPage() {
       {!!stats?.newApplications && (
         <Link
           href="/admin/applications"
-          className="mt-6 flex items-center justify-between rounded-xl bg-brand-light px-5 py-4 text-sm font-medium text-brand-dark hover:opacity-90"
+          className="mt-6 flex items-center justify-between gap-4 rounded-xl bg-brand-light px-5 py-4 text-sm font-medium text-brand-dark hover:opacity-90"
         >
           <span>
             {stats.newApplications} new {stats.newApplications === 1 ? 'business registration is' : 'business registrations are'} waiting for you
           </span>
-          <span>View</span>
+          <span className="shrink-0">View →</span>
         </Link>
       )}
 
-      <div className="mt-8 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line">
+      <div className="mt-8 grid grid-cols-1 gap-px sm:grid-cols-3 overflow-hidden rounded-xl border border-line bg-line">
         {metrics.map((m) => (
           <div key={m.label} className="bg-surface p-5">
             <p className="text-sm text-muted">{m.label}</p>

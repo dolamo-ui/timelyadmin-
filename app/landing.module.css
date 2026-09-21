@@ -47,6 +47,7 @@
 .ghost,
 .pill {
   display: inline-flex;
+  white-space: nowrap;
   align-items: center;
   justify-content: center;
   text-decoration: none;
@@ -170,7 +171,8 @@
 
 .h1 {
   margin: 0;
-  font-size: clamp(2.7rem, 6.6vw, 5.6rem);
+  font-size: clamp(2.35rem, 6.6vw, 5.6rem);
+  text-wrap: balance;
   line-height: 0.97;
   letter-spacing: -0.04em;
   font-weight: 700;
@@ -574,6 +576,7 @@
   display: flex;
   gap: 8px;
   margin: 16px 0 6px;
+  flex-wrap: wrap;
 }
 .chip {
   padding: 7px 14px;
@@ -712,12 +715,23 @@
 
 /* ------------------------------- responsive ------------------------------- */
 
+.short {
+  display: none;
+}
+
 @media (max-width: 960px) {
   .heroGrid,
   .stepsGrid,
-  .ctrlGrid,
-    .stage {
+  .ctrlGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .heroGrid {
+    gap: 48px;
+  }
+  .stage {
+    width: min(100%, 460px);
     min-height: 500px;
+    margin-inline: auto;
   }
   .stickyCol {
     position: static;
@@ -734,8 +748,17 @@
   .ghost {
     width: 100%;
   }
+  .stage {
+    min-height: 470px;
+  }
   .checked {
     left: 0;
+  }
+  .long {
+    display: none;
+  }
+  .short {
+    display: inline;
   }
 }
 
@@ -1081,5 +1104,18 @@
     height: 38px;
     padding: 0 14px;
     font-size: 13px;
+  }
+}
+
+.markImg {
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex: none;
+}
+@media (max-width: 560px) {
+  .markImg {
+    width: 38px;
+    height: 38px;
   }
 }

@@ -10,7 +10,7 @@ const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
 const INPUT =
   'w-full rounded-lg border border-line bg-surface px-3.5 py-2.5 text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand-light';
 const TIME =
-  'rounded-md border border-line bg-surface px-2.5 py-1.5 text-sm text-ink tabular-nums outline-none focus:border-brand';
+  'min-w-0 flex-1 sm:flex-none rounded-md border border-line bg-surface px-2.5 py-1.5 text-sm text-ink tabular-nums outline-none focus:border-brand';
 const LABEL = 'mb-1.5 block text-sm font-medium text-ink';
 const MAX_IMAGE_MB = 3;
 const PRICE_OPTIONS = [
@@ -212,8 +212,8 @@ export default function ProfilePage() {
         <h2 className="font-display text-sm font-semibold text-ink">Photo</h2>
         <p className="mt-1 text-sm text-muted">The main picture customers see in the app.</p>
 
-        <div className="mt-3 flex items-start gap-4">
-          <div className="flex h-28 w-40 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-line bg-paper text-xs text-muted">
+        <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-start">
+          <div className="flex h-40 w-full shrink-0 sm:h-28 sm:w-40 items-center justify-center overflow-hidden rounded-xl border border-line bg-paper text-xs text-muted">
             {image ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={image} alt="Business" className="h-full w-full object-cover" />
@@ -245,7 +245,7 @@ export default function ProfilePage() {
       <section className="mt-10 space-y-4">
         <h2 className="font-display text-sm font-semibold text-ink">Contact</h2>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="phone" className={LABEL}>Phone</label>
             <input id="phone" value={phone} onChange={(e) => { setPhone(e.target.value); touch(); }} placeholder="076 670 3518" className={INPUT} />
@@ -267,7 +267,7 @@ export default function ProfilePage() {
       <section className="mt-10 space-y-4">
         <h2 className="font-display text-sm font-semibold text-ink">Location</h2>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="address" className={LABEL}>Address</label>
             <input id="address" value={address} onChange={(e) => { setAddress(e.target.value); touch(); }} placeholder="2622 Block L" className={INPUT} />
@@ -302,7 +302,7 @@ export default function ProfilePage() {
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="lat" className="mb-1 block text-xs text-muted">Latitude</label>
             <input id="lat" value={lat} onChange={(e) => { setLat(e.target.value); touch(); }} placeholder="-25.5407" className={INPUT} />
@@ -333,20 +333,20 @@ export default function ProfilePage() {
           {DAYS.map((day, i) => {
             const d = hours[i];
             return (
-              <div key={day} className="flex items-center gap-4 border-b border-line px-5 py-3 last:border-0">
-                <span className="w-28 text-sm font-medium text-ink">{day}</span>
+              <div key={day} className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line px-4 py-3 last:border-0 sm:px-5">
+                <span className="w-24 text-sm font-medium text-ink sm:w-28">{day}</span>
 
                 {d.closed ? (
-                  <span className="flex-1 text-sm text-muted">Closed</span>
+                  <span className="hidden text-sm text-muted sm:block sm:flex-1">Closed</span>
                 ) : (
-                  <div className="flex flex-1 items-center gap-2">
+                  <div className="order-last flex w-full items-center gap-2 sm:order-none sm:w-auto sm:flex-1">
                     <input type="time" value={d.open} onChange={(e) => updateDay(i, { open: e.target.value })} className={TIME} />
                     <span className="text-sm text-muted">to</span>
                     <input type="time" value={d.close} onChange={(e) => updateDay(i, { close: e.target.value })} className={TIME} />
                   </div>
                 )}
 
-                <label className="flex items-center gap-1.5 text-sm text-muted">
+                <label className="ml-auto flex items-center gap-1.5 text-sm text-muted sm:ml-0">
                   <input
                     type="checkbox"
                     checked={d.closed}

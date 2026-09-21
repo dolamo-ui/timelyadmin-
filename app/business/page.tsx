@@ -29,7 +29,7 @@ export default function BusinessOverviewPage() {
         <div className="mt-5 rounded-lg bg-warn/10 px-3.5 py-2.5 text-sm text-warn">{error}</div>
       )}
 
-      <div className="mt-8 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line">
+      <div className="mt-8 grid grid-cols-1 gap-px sm:grid-cols-3 overflow-hidden rounded-xl border border-line bg-line">
         {metrics.map((m) => (
           <div key={m.label} className="bg-surface p-5">
             <p className="text-sm text-muted">{m.label}</p>

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
+import { Logo } from '../components/Logo';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -51,10 +52,8 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-sm">
-        <div className="mb-8 flex items-center gap-2.5">
-          <span className="flex h-8 w-8 items-center justify-center rounded-md bg-brand text-sm font-semibold text-white font-display">
-            T
-          </span>
+        <div className="mb-8 flex items-center gap-3">
+          <Logo size={44} priority />
           <span className="font-display text-lg font-semibold tracking-tight text-ink">
             Timely Admin
           </span>

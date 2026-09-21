@@ -65,7 +65,7 @@ export default function StaffPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="font-display text-2xl font-semibold text-ink">Staff</h1>
           <p className="mt-1.5 text-sm text-muted">Team members customers can book with.</p>
@@ -90,7 +90,7 @@ export default function StaffPage() {
           <h2 className="font-display text-sm font-semibold text-ink">
             {draft.id ? 'Edit staff member' : 'New staff member'}
           </h2>
-          <div className="mt-4 grid grid-cols-2 gap-4">
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="st-name" className="mb-1.5 block text-sm font-medium text-ink">Name</label>
               <input
@@ -127,27 +127,30 @@ export default function StaffPage() {
         </form>
       )}
 
-      <div className="mt-8 overflow-hidden rounded-xl border border-line">
+      <div className="mt-8 overflow-x-auto rounded-xl border border-line">
         <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-line bg-paper text-xs uppercase tracking-wide text-muted">
-              <th className="px-5 py-3 font-medium">Name</th>
-              <th className="px-5 py-3 font-medium">Role</th>
-              <th className="px-5 py-3 font-medium"></th>
+              <th className="px-3 py-3 sm:px-5 font-medium">Name</th>
+              <th className="hidden px-3 py-3 font-medium sm:table-cell sm:px-5">Role</th>
+              <th className="px-3 py-3 sm:px-5 font-medium"></th>
             </tr>
           </thead>
           <tbody>
             {staff === null && !error && (
-              <tr><td colSpan={3} className="px-5 py-6 text-center text-muted">Loading…</td></tr>
+              <tr><td colSpan={3} className="px-3 py-6 sm:px-5 text-center text-muted">Loading…</td></tr>
             )}
             {staff?.length === 0 && (
-              <tr><td colSpan={3} className="px-5 py-6 text-center text-muted">No staff yet — add your first team member.</td></tr>
+              <tr><td colSpan={3} className="px-3 py-6 sm:px-5 text-center text-muted">No staff yet — add your first team member.</td></tr>
             )}
             {staff?.map((s) => (
               <tr key={s.id} className="border-b border-line last:border-0 hover:bg-paper/60">
-                <td className="px-5 py-3.5 font-medium text-ink">{s.name}</td>
-                <td className="px-5 py-3.5 text-muted">{s.role ?? '—'}</td>
-                <td className="px-5 py-3.5 text-right">
+                <td className="px-3 py-3.5 font-medium text-ink sm:px-5">
+                  {s.name}
+                  <span className="mt-0.5 block text-xs font-normal text-muted sm:hidden">{s.role ?? '—'}</span>
+                </td>
+                <td className="hidden px-3 py-3.5 text-muted sm:table-cell sm:px-5">{s.role ?? '—'}</td>
+                <td className="px-3 py-3.5 sm:px-5 text-right">
                   <div className="flex justify-end gap-3">
                     <button
                       onClick={() => {
