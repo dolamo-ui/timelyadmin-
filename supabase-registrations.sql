@@ -25,3 +25,8 @@ create index if not exists business_applications_status_idx
 -- browser. The website form saves through the server (/api/apply), and only the
 -- super admin can read them (through /api/admin/applications).
 alter table public.business_applications enable row level security;
+
+-- Newer Supabase projects don't automatically give the API roles access to tables you
+-- create yourself. The server (service_role) needs it to save and read registrations.
+-- Deliberately NOT granted to anon / authenticated, so the browser can never touch this table.
+grant select, insert, update, delete on public.business_applications to service_role;
