@@ -15,5 +15,5 @@ export function Logo({
   className?: string;
   priority?: boolean;
 }) {
-  return <Image src="/logo.png" alt={alt} width={size} height={size} priority={priority} className={className} />;
+  return <Image src="/icon.png" alt={alt} width={size} height={size} priority={priority} className={className} />;
 }
