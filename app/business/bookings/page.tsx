@@ -105,6 +105,13 @@ export default function BookingsPage() {
                 {b.date} · {b.time}
                 {b.staff !== 'Not assigned' && ` · ${b.staff}`}
               </p>
+              {b.locationType === 'mobile' && (
+                <div className="mt-1.5 rounded-lg bg-brand-light px-2.5 py-1.5 text-xs text-brand-dark">
+                  <span className="font-semibold">On-site visit</span>
+                  {b.address && <span> · {b.address}</span>}
+                  {!!b.travelFee && <span> · Travel fee R{b.travelFee}</span>}
+                </div>
+              )}
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 <span className={`rounded px-2 py-0.5 text-xs font-medium ${STATUS_STYLE[b.status] ?? ''}`}>
                   {b.status}
@@ -168,6 +175,11 @@ export default function BookingsPage() {
                 <td className="px-3 py-3.5 text-muted xl:px-5">
                   {b.service}
                   <span className="block text-xs text-muted/70">{b.staff}</span>
+                  {b.locationType === 'mobile' && (
+                    <span className="mt-1 inline-block rounded bg-brand-light px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-brand-dark">
+                      On-site{b.address ? ` · ${b.address}` : ''}
+                    </span>
+                  )}
                 </td>
                 <td className="px-3 py-3.5 text-muted xl:px-5">
                   {b.date}

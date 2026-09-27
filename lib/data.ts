@@ -12,11 +12,15 @@ import {
 /* ---------------------------------------------------------------------------
  * SCHEMA THIS FILE RELIES ON (matches your mobile app):
  *   businesses(id uuid, name, category, about, image, address, city, phone,
- *              website, opening_hours jsonb, latitude, longitude, owner_id)
- *   services  (id, business_id, name, description, duration_minutes, price)
- *   staff     (id, business_id, name, role, rating)
+ *              website, opening_hours jsonb, latitude, longitude, owner_id,
+ *              mobile_radius_km numeric null)
+ *   services  (id, business_id, name, description, duration_minutes, price,
+ *              is_mobile_eligible boolean, travel_fee numeric, travel_buffer_minutes int)
+ *   staff     (id, business_id, name, role, rating, can_travel boolean)
+ *   addresses (id, user_id, label, address_line, city, ...) — client-owned
  *   bookings  (id, business_id, service_id, user_id?, date text, time text,
- *              price text, status, + denormalised names the app saves)
+ *              price text, status, location_type text, address_id uuid,
+ *              travel_fee numeric, + denormalised names the app saves)
  *   The mobile app saves booking `date` as text like "Fri, 19 Sep 2026" and
  *   `time` like "10:00 AM"; parseBookingDate() in format.ts understands that.
  * ------------------------------------------------------------------------- */
@@ -45,6 +49,7 @@ export interface Business {
   longitude: number | null;
   price_range: string | null;
   opening_hours: unknown;
+  mobile_radius_km: number | null;
 }
 
 export interface Service {
@@ -53,12 +58,16 @@ export interface Service {
   description: string | null;
   duration_minutes: number;
   price: number;
+  is_mobile_eligible: boolean;
+  travel_fee: number;
+  travel_buffer_minutes: number;
 }
 
 export interface StaffMember {
   id: string;
   name: string;
   role: string | null;
+  can_travel: boolean;
 }
 
 export interface BookingRow {
@@ -73,6 +82,9 @@ export interface BookingRow {
   status: BookingStatus;
   isoDate: string | null;
   checkedInAt: string | null;
+  locationType: 'in_store' | 'mobile';
+  address: string | null;
+  travelFee: number | null;
 }
 
 /* ---------------------------------- hours --------------------------------- */
@@ -122,7 +134,7 @@ export function normalizeHours(raw: unknown): OpeningHours {
 /* -------------------------------- business -------------------------------- */
 
 const BUSINESS_COLUMNS =
-  'id, name, category, about, image, phone, website, address, city, latitude, longitude, price_range, opening_hours';
+  'id, name, category, about, image, phone, website, address, city, latitude, longitude, price_range, opening_hours, mobile_radius_km';
 
 export async function getMyBusiness(): Promise<Business | null> {
   const {
@@ -164,7 +176,7 @@ export async function uploadBusinessImage(businessId: string, file: File): Promi
 export async function listServices(businessId: string): Promise<Service[]> {
   const { data, error } = await supabase
     .from('services')
-    .select('id, name, description, duration_minutes, price')
+    .select('id, name, description, duration_minutes, price, is_mobile_eligible, travel_fee, travel_buffer_minutes')
     .eq('business_id', businessId)
     .order('name');
   if (error) throw error;
@@ -173,7 +185,16 @@ export async function listServices(businessId: string): Promise<Service[]> {
 
 export async function saveService(
   businessId: string,
-  s: { id?: string; name: string; description: string; duration_minutes: number; price: number }
+  s: {
+    id?: string;
+    name: string;
+    description: string;
+    duration_minutes: number;
+    price: number;
+    is_mobile_eligible: boolean;
+    travel_fee: number;
+    travel_buffer_minutes: number;
+  }
 ) {
   const payload = {
     business_id: businessId,
@@ -181,6 +202,11 @@ export async function saveService(
     description: s.description || null,
     duration_minutes: s.duration_minutes,
     price: s.price,
+    is_mobile_eligible: s.is_mobile_eligible,
+    // Keep the fee/buffer at zero when mobile isn't offered, rather than
+    // carrying over stale values from a previous edit.
+    travel_fee: s.is_mobile_eligible ? s.travel_fee : 0,
+    travel_buffer_minutes: s.is_mobile_eligible ? s.travel_buffer_minutes : 0,
   };
   const { error } = s.id
     ? await supabase.from('services').update(payload).eq('id', s.id)
@@ -198,15 +224,18 @@ export async function deleteService(id: string) {
 export async function listStaff(businessId: string): Promise<StaffMember[]> {
   const { data, error } = await supabase
     .from('staff')
-    .select('id, name, role')
+    .select('id, name, role, can_travel')
     .eq('business_id', businessId)
     .order('name');
   if (error) throw error;
   return (data ?? []).map((s) => ({ ...s, id: String(s.id) })) as StaffMember[];
 }
 
-export async function saveStaff(businessId: string, s: { id?: string; name: string; role: string }) {
-  const payload = { business_id: businessId, name: s.name, role: s.role || null };
+export async function saveStaff(
+  businessId: string,
+  s: { id?: string; name: string; role: string; can_travel: boolean }
+) {
+  const payload = { business_id: businessId, name: s.name, role: s.role || null, can_travel: s.can_travel };
   const { error } = s.id
     ? await supabase.from('staff').update(payload).eq('id', s.id)
     : await supabase.from('staff').insert(payload);
@@ -230,16 +259,18 @@ async function toBookingRows(rows: any[]): Promise<BookingRow[]> {
   const uniq = (key: string) =>
     Array.from(new Set(rows.map((r) => r[key]).filter(Boolean).map(String)));
 
-  const [customers, services, staff] = await Promise.all([
+  const [customers, services, staff, addresses] = await Promise.all([
     lookup('profiles', uniq('user_id'), 'id, full_name'),
     lookup('services', uniq('service_id'), 'id, name'),
     lookup('staff', uniq('staff_id'), 'id, name'),
+    lookup('addresses', uniq('address_id'), 'id, label, address_line, city'),
   ]);
 
   return rows.map((r) => {
     const rawDate = r.date ?? r.booking_date ?? '';
     const rawTime = r.time ?? r.booking_time ?? '';
     const iso = parseBookingDate(rawDate);
+    const addr = r.address_id ? addresses.get(String(r.address_id)) : null;
     return {
       id: String(r.id),
       customer:
@@ -253,6 +284,9 @@ async function toBookingRows(rows: any[]): Promise<BookingRow[]> {
       status: r.status as BookingStatus,
       isoDate: iso,
       checkedInAt: r.checked_in_at ?? null,
+      locationType: r.location_type === 'mobile' ? 'mobile' : 'in_store',
+      address: addr ? `${addr.address_line}${addr.city ? `, ${addr.city}` : ''}` : null,
+      travelFee: r.travel_fee ?? null,
     };
   });
 }

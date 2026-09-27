@@ -35,6 +35,9 @@ export default function ProfilePage() {
   const [city, setCity] = useState(business.city ?? '');
   const [lat, setLat] = useState(business.latitude != null ? String(business.latitude) : '');
   const [lng, setLng] = useState(business.longitude != null ? String(business.longitude) : '');
+  const [mobileRadius, setMobileRadius] = useState(
+    business.mobile_radius_km != null ? String(business.mobile_radius_km) : ''
+  );
   const [mapsInput, setMapsInput] = useState('');
   const [mapsMsg, setMapsMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [hours, setHours] = useState<DayHours[]>(() => {
@@ -122,6 +125,14 @@ export default function ProfilePage() {
     const badDay = hours.findIndex((d) => !d.closed && d.open >= d.close);
     if (badDay !== -1) return setError(`${DAYS[badDay]}: closing time must be after opening time.`);
 
+    let mobile_radius_km: number | null = null;
+    if (mobileRadius.trim()) {
+      mobile_radius_km = Number(mobileRadius);
+      if (!Number.isFinite(mobile_radius_km) || mobile_radius_km < 0) {
+        return setError('Mobile service radius must be a positive number of km, or left empty.');
+      }
+    }
+
     // Saved in the '0'..'6' shape the mobile booking screen reads.
     const opening_hours = Object.fromEntries(hours.map((d, i) => [String(i), d]));
 
@@ -138,6 +149,7 @@ export default function ProfilePage() {
         city: city.trim() || null,
         latitude,
         longitude,
+        mobile_radius_km,
         opening_hours,
       };
       await updateBusiness(business.id, patch);
@@ -323,6 +335,21 @@ export default function ProfilePage() {
             View location on Google Maps ↗
           </a>
         )}
+
+        <div>
+          <label htmlFor="mobile-radius" className={LABEL}>Mobile service radius (km)</label>
+          <input
+            id="mobile-radius"
+            value={mobileRadius}
+            onChange={(e) => { setMobileRadius(e.target.value); touch(); }}
+            placeholder="e.g. 15"
+            className={`${INPUT} max-w-[160px]`}
+          />
+          <p className="mt-1.5 text-xs text-muted">
+            How far staff will travel for mobile/on-site services. Only matters for services you&apos;ve
+            marked as offering a mobile visit. Leave empty for no limit.
+          </p>
+        </div>
       </section>
 
       {/* -------------------------------- hours -------------------------------- */}

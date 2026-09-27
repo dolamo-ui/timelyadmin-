@@ -9,9 +9,10 @@ interface Draft {
   id?: string;
   name: string;
   role: string;
+  canTravel: boolean;
 }
 
-const EMPTY: Draft = { name: '', role: '' };
+const EMPTY: Draft = { name: '', role: '', canTravel: false };
 const INPUT =
   'w-full rounded-lg border border-line bg-surface px-3.5 py-2.5 text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand-light';
 
@@ -42,7 +43,12 @@ export default function StaffPage() {
     setError(null);
     setSaving(true);
     try {
-      await saveStaff(business.id, { id: draft.id, name: draft.name.trim(), role: draft.role.trim() });
+      await saveStaff(business.id, {
+        id: draft.id,
+        name: draft.name.trim(),
+        role: draft.role.trim(),
+        can_travel: draft.canTravel,
+      });
       setDraft(null);
       await reload();
     } catch (err) {
@@ -112,6 +118,15 @@ export default function StaffPage() {
               />
             </div>
           </div>
+          <label className="mt-4 flex items-center gap-2 text-sm text-ink">
+            <input
+              type="checkbox"
+              checked={draft.canTravel}
+              onChange={(e) => setDraft({ ...draft, canTravel: e.target.checked })}
+              className="h-3.5 w-3.5 rounded border-line accent-brand"
+            />
+            Travels for mobile / on-site jobs
+          </label>
           <div className="mt-4 flex gap-3">
             <button
               type="submit"
@@ -147,6 +162,11 @@ export default function StaffPage() {
               <tr key={s.id} className="border-b border-line last:border-0 hover:bg-paper/60">
                 <td className="px-3 py-3.5 font-medium text-ink sm:px-5">
                   {s.name}
+                  {s.can_travel && (
+                    <span className="ml-2 inline-block rounded bg-brand-light px-1.5 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-brand-dark">
+                      Travels
+                    </span>
+                  )}
                   <span className="mt-0.5 block text-xs font-normal text-muted sm:hidden">{s.role ?? '—'}</span>
                 </td>
                 <td className="hidden px-3 py-3.5 text-muted sm:table-cell sm:px-5">{s.role ?? '—'}</td>
@@ -155,7 +175,7 @@ export default function StaffPage() {
                     <button
                       onClick={() => {
                         setError(null);
-                        setDraft({ id: s.id, name: s.name, role: s.role ?? '' });
+                        setDraft({ id: s.id, name: s.name, role: s.role ?? '', canTravel: s.can_travel });
                       }}
                       className="text-xs font-medium text-brand hover:underline"
                     >

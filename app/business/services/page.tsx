@@ -11,9 +11,20 @@ interface Draft {
   description: string;
   duration: string;
   price: string;
+  isMobileEligible: boolean;
+  travelFee: string;
+  travelBufferMinutes: string;
 }
 
-const EMPTY: Draft = { name: '', description: '', duration: '30', price: '' };
+const EMPTY: Draft = {
+  name: '',
+  description: '',
+  duration: '30',
+  price: '',
+  isMobileEligible: false,
+  travelFee: '0',
+  travelBufferMinutes: '0',
+};
 const INPUT =
   'w-full rounded-lg border border-line bg-surface px-3.5 py-2.5 text-sm text-ink outline-none focus:border-brand focus:ring-2 focus:ring-brand-light';
 
@@ -42,9 +53,17 @@ export default function ServicesPage() {
 
     const duration = parseInt(draft.duration, 10);
     const price = parseFloat(draft.price);
+    const travelFee = parseFloat(draft.travelFee || '0');
+    const travelBufferMinutes = parseInt(draft.travelBufferMinutes || '0', 10);
     if (!draft.name.trim()) return setError('Give the service a name.');
     if (!Number.isFinite(duration) || duration <= 0) return setError('Duration must be a number of minutes.');
     if (!Number.isFinite(price) || price < 0) return setError('Enter a valid price.');
+    if (draft.isMobileEligible && (!Number.isFinite(travelFee) || travelFee < 0)) {
+      return setError('Enter a valid travel fee (0 is fine).');
+    }
+    if (draft.isMobileEligible && (!Number.isFinite(travelBufferMinutes) || travelBufferMinutes < 0)) {
+      return setError('Enter a valid travel time buffer in minutes (0 is fine).');
+    }
 
     setError(null);
     setSaving(true);
@@ -55,6 +74,9 @@ export default function ServicesPage() {
         description: draft.description.trim(),
         duration_minutes: duration,
         price,
+        is_mobile_eligible: draft.isMobileEligible,
+        travel_fee: travelFee,
+        travel_buffer_minutes: travelBufferMinutes,
       });
       setDraft(null);
       await reload();
@@ -152,6 +174,52 @@ export default function ServicesPage() {
               placeholder="What's included?"
             />
           </div>
+
+          <div className="mt-4 rounded-lg border border-line bg-surface p-4">
+            <label className="flex items-center gap-2 text-sm font-medium text-ink">
+              <input
+                type="checkbox"
+                checked={draft.isMobileEligible}
+                onChange={(e) => setDraft({ ...draft, isMobileEligible: e.target.checked })}
+                className="h-3.5 w-3.5 rounded border-line accent-brand"
+              />
+              Offer this as a mobile / on-site visit
+            </label>
+            <p className="mt-1 text-xs text-muted">
+              Customers can choose to have a staff member travel to their address for this service.
+            </p>
+
+            {draft.isMobileEligible && (
+              <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="s-travel-fee" className="mb-1.5 block text-sm font-medium text-ink">Travel fee (R)</label>
+                  <input
+                    id="s-travel-fee"
+                    type="number"
+                    min={0}
+                    step="any"
+                    className={INPUT}
+                    value={draft.travelFee}
+                    onChange={(e) => setDraft({ ...draft, travelFee: e.target.value })}
+                    placeholder="0"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="s-travel-buffer" className="mb-1.5 block text-sm font-medium text-ink">Extra travel time (min)</label>
+                  <input
+                    id="s-travel-buffer"
+                    type="number"
+                    min={0}
+                    step={5}
+                    className={INPUT}
+                    value={draft.travelBufferMinutes}
+                    onChange={(e) => setDraft({ ...draft, travelBufferMinutes: e.target.value })}
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
           <div className="mt-4 flex gap-3">
             <button
               type="submit"
@@ -188,6 +256,11 @@ export default function ServicesPage() {
               <tr key={s.id} className="border-b border-line last:border-0 hover:bg-paper/60">
                 <td className="px-3 py-3.5 font-medium text-ink sm:px-5">
                   {s.name}
+                  {s.is_mobile_eligible && (
+                    <span className="ml-2 inline-block rounded bg-brand-light px-1.5 py-0.5 align-middle text-[10px] font-semibold uppercase tracking-wide text-brand-dark">
+                      Mobile
+                    </span>
+                  )}
                   <span className="mt-0.5 block text-xs font-normal text-muted sm:hidden">{s.duration_minutes} min</span>
                 </td>
                 <td className="hidden px-3 py-3.5 text-muted sm:table-cell sm:px-5">{s.duration_minutes} min</td>
@@ -203,6 +276,9 @@ export default function ServicesPage() {
                           description: s.description ?? '',
                           duration: String(s.duration_minutes),
                           price: String(s.price),
+                          isMobileEligible: s.is_mobile_eligible,
+                          travelFee: String(s.travel_fee ?? 0),
+                          travelBufferMinutes: String(s.travel_buffer_minutes ?? 0),
                         });
                       }}
                       className="text-xs font-medium text-brand hover:underline"
