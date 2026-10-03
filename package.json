@@ -1,5 +1,5 @@
 {
-  "name": "timely-admin",
+  "name": "timelysa-admin",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,9 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
-  },
-  "engines": {
-    "node": "22.x"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.109.0",

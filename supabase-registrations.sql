@@ -1,5 +1,5 @@
 -- =====================================================================
--- Timely: business registrations from the website form.
+-- Timelysa: business registrations from the website form.
 -- Safe to re-run. Run once in the Supabase SQL editor.
 -- =====================================================================
 

@@ -1,5 +1,5 @@
 -- =====================================================================
--- Timely Admin — Supabase setup (v2, safe to re-run any number of times)
+-- Timelysa Admin — Supabase setup (v2, safe to re-run any number of times)
 -- Run the WHOLE file in the Supabase SQL editor.
 -- Policies are additive: your existing customer/mobile policies keep working.
 -- =====================================================================

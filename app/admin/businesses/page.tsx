@@ -19,7 +19,7 @@ export default function BusinessesPage() {
         <div>
           <h1 className="font-display text-2xl font-semibold text-ink">Businesses</h1>
           <p className="mt-1.5 text-sm text-muted">
-            Every business on Timely, and whether their owner account is set up.
+            Every business on Timelysa, and whether their owner account is set up.
           </p>
         </div>
         <Link

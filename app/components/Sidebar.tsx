@@ -65,7 +65,7 @@ export function Sidebar({
           <Logo size={36} className="shrink-0" priority />
           <div className="min-w-0">
             <p className="font-display text-[15px] font-semibold leading-tight tracking-tight text-ink">
-              Timely Admin
+              Timelysa Admin
             </p>
             <p className="truncate text-xs leading-tight text-muted">{contextLabel}</p>
           </div>
@@ -104,7 +104,7 @@ export function Sidebar({
             <div className="flex items-center gap-2.5">
               <Logo size={32} />
               <span className="font-display text-[15px] font-semibold tracking-tight text-ink">
-                Timely Admin
+                Timelysa Admin
               </span>
             </div>
             <span className="mt-2 inline-block rounded bg-brand-light px-2 py-0.5 text-[11px] font-medium text-brand-dark">

@@ -206,7 +206,7 @@ function NewBusinessForm() {
             placeholder="owner@business.com"
           />
           <p className="mt-1.5 text-xs text-muted">
-            This is what they&apos;ll use to sign in. It must not already have a Timely account.
+            This is what they&apos;ll use to sign in. It must not already have a Timelysa account.
           </p>
         </div>
 

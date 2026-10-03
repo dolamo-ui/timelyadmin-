@@ -15,8 +15,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Timely Admin',
-  description: 'Manage businesses, bookings, services and staff on Timely.',
+  title: 'Timelysa Admin',
+  description: 'Manage businesses, bookings, services and staff on Timelysa.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

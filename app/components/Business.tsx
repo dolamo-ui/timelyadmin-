@@ -56,7 +56,7 @@ export function BusinessShell({ items, children }: { items: NavItem[]; children:
           {state === 'loading' && <p className="text-sm text-muted">Loading your business…</p>}
           {state === 'missing' && (
             <p className="text-sm text-muted">
-              No business is linked to this account yet. Please contact Timely.
+              No business is linked to this account yet. Please contact Timelysa.
             </p>
           )}
           {state === 'error' && (

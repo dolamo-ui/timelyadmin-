@@ -159,7 +159,7 @@ export function RegisterForm() {
           </span>
           <h3 className={`${s.successTitle} ${s.display}`}>Thank you, {done.name}!</h3>
           <p className={s.successText}>
-            We’ve received the registration for <strong>{done.business}</strong>. The Timely team will contact you
+            We’ve received the registration for <strong>{done.business}</strong>. The Timelysa team will contact you
             on WhatsApp ({done.whatsapp}) or by email to get you set up.
           </p>
           <button type="button" className={s.linkBtn} onClick={reset}>
@@ -248,7 +248,7 @@ export function RegisterForm() {
       <button type="submit" className={`${s.primary} ${s.submit}`} disabled={sending}>
         {sending ? 'Sending…' : 'Register my business'}
       </button>
-      <p className={s.privacy}>We only use your details to contact you about Timely.</p>
+      <p className={s.privacy}>We only use your details to contact you about Timelysa.</p>
     </form>
   );
 }

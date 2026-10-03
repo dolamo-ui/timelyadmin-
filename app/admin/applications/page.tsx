@@ -60,7 +60,7 @@ export default function ApplicationsPage() {
     <div>
       <h1 className="font-display text-2xl font-semibold text-ink">Registrations</h1>
       <p className="mt-1.5 text-sm text-muted">
-        Businesses that filled in the form on the Timely website. Contact them, then set up their login.
+        Businesses that filled in the form on the Timelysa website. Contact them, then set up their login.
       </p>
 
       <div className="mt-6 flex flex-wrap gap-2">

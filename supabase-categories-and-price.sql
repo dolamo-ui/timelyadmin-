@@ -1,5 +1,5 @@
 -- =====================================================================
--- Timely: price range fix + new categories
+-- Timelysa: price range fix + new categories
 -- =====================================================================
 
 -- ---------- STEP A — price range (run now) ----------

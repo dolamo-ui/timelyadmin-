@@ -55,13 +55,13 @@ export default function LoginPage() {
         <div className="mb-8 flex items-center gap-3">
           <Logo size={44} priority />
           <span className="font-display text-lg font-semibold tracking-tight text-ink">
-            Timely Admin
+            Timelysa Admin
           </span>
         </div>
 
         <h1 className="font-display text-2xl font-semibold text-ink">Sign in</h1>
         <p className="mt-1.5 text-sm text-muted">
-          Accounts are set up by Timely — reach out if you don&apos;t have one yet.
+          Accounts are set up by Timelysa — reach out if you don&apos;t have one yet.
         </p>
 
         {error && (

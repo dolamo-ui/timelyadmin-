@@ -307,7 +307,7 @@ export async function setBookingStatus(id: string, status: BookingStatus) {
 /* -------------------------------- check-in -------------------------------- */
 
 /**
- * The QR code on the customer's ticket holds "timely://booking/<id>"; the
+ * The QR code on the customer's ticket holds "timelysa://booking/<id>"; the
  * ticket also shows "#BK<id>". Accept either, or the bare id.
  */
 export function parseBookingRef(input: string): string {

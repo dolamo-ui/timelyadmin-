@@ -23,7 +23,7 @@ export default function BusinessOverviewPage() {
   return (
     <div>
       <h1 className="font-display text-2xl font-semibold text-ink">Overview</h1>
-      <p className="mt-1.5 text-sm text-muted">How {business.name} is doing on Timely.</p>
+      <p className="mt-1.5 text-sm text-muted">How {business.name} is doing on Timelysa.</p>
 
       {error && (
         <div className="mt-5 rounded-lg bg-warn/10 px-3.5 py-2.5 text-sm text-warn">{error}</div>

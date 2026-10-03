@@ -1,6 +1,6 @@
-# Timely Admin
+# Timelysa Admin
 
-The web dashboard for Timely — a Super Admin area (you) and a Business Owner
+The web dashboard for Timelysa — a Super Admin area (you) and a Business Owner
 area (the businesses you onboard).
 
 ## Running it

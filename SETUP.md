@@ -1,4 +1,4 @@
-# Timely Admin — wiring it to Supabase
+# Timelysa Admin — wiring it to Supabase
 
 1. Merge these files into your existing admin project (same relative paths).
    `lib/supabase.ts` (your existing browser client) is untouched.

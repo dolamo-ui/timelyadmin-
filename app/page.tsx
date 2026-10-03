@@ -10,18 +10,18 @@ import s from './landing.module.css';
 const display = Bricolage_Grotesque({ subsets: ['latin'], variable: '--font-display', display: 'swap' });
 
 export const metadata: Metadata = {
-  title: 'Timely for business — more bookings, less chasing',
+  title: 'Timelysa for business — more bookings, less chasing',
   description:
-    'Get found, get booked and stay organised. Timely gives customers one simple way to book your business, and gives you one clear place to manage it. Register your business today.',
+    'Get found, get booked and stay organised. Timelysa gives customers one simple way to book your business, and gives you one clear place to manage it. Register your business today.',
 };
 
 // TODO: replace with the address customers should write to about getting set up.
-const CONTACT_EMAIL = 'hello@timely.app';
+const CONTACT_EMAIL = 'hello@timelysa.app';
 
 const STEPS = [
   {
     title: 'The customer opens their booking',
-    text: 'In the Timely app, an upcoming booking shows a QR pass and a reference like #BK482913.',
+    text: 'In the Timelysa app, an upcoming booking shows a QR pass and a reference like #BK482913.',
   },
   {
     title: 'You scan it in Check-in',
@@ -85,7 +85,7 @@ const PERKS = [
 
 const NEXT_STEPS = [
   { title: 'You send your details', text: 'It takes about two minutes.' },
-  { title: 'We get in touch', text: 'The Timely team contacts you on WhatsApp or email to confirm everything.' },
+  { title: 'We get in touch', text: 'The Timelysa team contacts you on WhatsApp or email to confirm everything.' },
   { title: 'We create your login', text: 'You receive your email and a temporary password.' },
   { title: 'You open for bookings', text: 'Add your services, hours and photo, and customers can start booking.' },
 ];
@@ -188,7 +188,7 @@ export default function LandingPage() {
           <nav className={s.nav} aria-label="Main">
             <a href="#top" className={s.brand}>
               <Logo size={44} className={s.markImg} priority />
-              <span className={s.wordmark}>TIMELY</span>
+              <span className={s.wordmark}>TIMELYSA</span>
               <span className={s.forBusiness}>for business</span>
             </a>
             <div className={s.navActions}>
@@ -207,7 +207,7 @@ export default function LandingPage() {
                 <span>Less chasing.</span>
               </h1>
               <p className={s.lede}>
-                Timely puts your business in front of customers who are ready to book. They pick a service and
+                Timelysa puts your business in front of customers who are ready to book. They pick a service and
                 a time in the app, you get the booking, and you get on with the work you do best.
               </p>
               <div className={s.ctaRow}>
@@ -288,9 +288,9 @@ export default function LandingPage() {
         {/* ------------------------------ perks ------------------------------ */}
         <section className={s.section}>
           <div className={s.wrap}>
-            <h2 className={`${s.h2} ${s.display}`}>You do the work. Timely does the booking.</h2>
+            <h2 className={`${s.h2} ${s.display}`}>You do the work. Timelysa does the booking.</h2>
             <p className={s.body}>
-              Every missed call is a customer who booked someone else. Timely gives customers one simple way to
+              Every missed call is a customer who booked someone else. Timelysa gives customers one simple way to
               book you, at any time of day, and gives you one clear place to see it all.
             </p>
             <ul className={s.perks}>
@@ -310,7 +310,7 @@ export default function LandingPage() {
             <div className={s.stickyCol}>
               <h2 className={`${s.h2} ${s.display}`}>Check-in takes one scan.</h2>
               <p className={`${s.body} ${s.bodyDark}`}>
-                Every upcoming booking in the Timely app has its own QR pass. Scan it and the booking opens
+                Every upcoming booking in the Timelysa app has its own QR pass. Scan it and the booking opens
                 with the service, time and status, so nobody has to search a list.
               </p>
             </div>
@@ -382,7 +382,7 @@ export default function LandingPage() {
             <div>
               <h2 className={`${s.h2} ${s.display}`}>Register your business now.</h2>
               <p className={s.body}>
-                Join the businesses customers can book in a few taps. Fill in the form and the Timely team will
+                Join the businesses customers can book in a few taps. Fill in the form and the Timelysa team will
                 get in touch to set you up.
               </p>
 
@@ -415,7 +415,7 @@ export default function LandingPage() {
 
       <div className={s.wrap}>
         <footer className={s.footer}>
-          <span>© {new Date().getFullYear()} Timely</span>
+          <span>© {new Date().getFullYear()} Timelysa</span>
           <span className={s.footerLinks}>
             <a className={s.link} href="#register">
               Register your business

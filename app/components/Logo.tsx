@@ -1,8 +1,8 @@
 import Image from 'next/image';
 
 /**
- * The Timely logo (public/logo.png). It's decorative by default because it always
- * sits next to the "Timely" name; pass `alt` if it ever stands on its own.
+ * The Timelysa logo (public/logo.png). It's decorative by default because it always
+ * sits next to the "Timelysa" name; pass `alt` if it ever stands on its own.
  */
 export function Logo({
   size = 32,
@@ -15,5 +15,5 @@ export function Logo({
   className?: string;
   priority?: boolean;
 }) {
-  return <Image src="/icon.png" alt={alt} width={size} height={size} priority={priority} className={className} />;
+  return <Image src="/logo.png" alt={alt} width={size} height={size} priority={priority} className={className} />;
 }
